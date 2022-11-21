@@ -8,6 +8,7 @@ import {
   Popup
 } from "react-leaflet";
 import cities from "../data";
+import Ellipse from './Ellipse'
 
 const Map = () => {
   const [map, setMap] = useState(null);
@@ -30,13 +31,20 @@ const Map = () => {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url={maps.base}
             />
-          </LayersControl.BaseLayer>
-          <LayersControl.Overlay checked name="Markers">
+          </LayersControl.BaseLayer><LayersControl.Overlay checked name='Ellipses'>
             <LayerGroup>
-              {cities.map(city => (
-                <Marker position={[city.lat, city.lng]}>
-                  <Popup>{city.city}</Popup>
-                </Marker>
+              {cities.map((city) => (
+                <>
+                  <Ellipse
+                    center={[city.lat, city.lng]}
+                    radii={[city.semimajor, city.semiminor]}
+                    tilt={city.tilt}
+                    options={city.options}
+                    key={city.tilt}
+                  >
+                    <Popup key={city.lat}>This is quality popup content.</Popup>
+                  </Ellipse>
+                </>
               ))}
             </LayerGroup>
           </LayersControl.Overlay>
